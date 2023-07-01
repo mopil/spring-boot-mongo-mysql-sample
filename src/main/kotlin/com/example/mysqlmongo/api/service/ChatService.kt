@@ -1,7 +1,8 @@
 package com.example.mysqlmongo.api.service
 
-import com.example.mysqlmongo.api.dto.request.CreateChatRequest
-import com.example.mysqlmongo.api.dto.request.GetChatByConditionRequest
+import com.example.mysqlmongo.api.dto.request.chat.CreateChatRequest
+import com.example.mysqlmongo.api.dto.request.chat.GetChatByConditionRequest
+import com.example.mysqlmongo.api.dto.request.chat.UpdateChatRequest
 import com.example.mysqlmongo.model.mongo.chat.Chat
 import com.example.mysqlmongo.model.mongo.chat.ChatRepository
 import org.springframework.stereotype.Service
@@ -14,8 +15,7 @@ class ChatService(
 
     @Transactional
     fun saveChat(request: CreateChatRequest): String {
-        val chat = chatRepository.save(request.toEntity())
-        return chat.id!!
+        return chatRepository.save(request.toEntity()).id!!
     }
 
     fun getChat(id: String): Chat {
@@ -26,6 +26,15 @@ class ChatService(
         return chatRepository.findAllByCondition(request.senderId, request.receiverId)
     }
 
+    @Transactional
+    fun updateChat(id: String, request: UpdateChatRequest): String {
+        val chat = chatRepository.findById(id).orElseThrow()
+        chat.updateContents(request.contents)
+        chatRepository.save(chat)
+        return chat.id!!
+    }
+
+    @Transactional
     fun deleteChat(id: String) {
         chatRepository.deleteById(id)
     }

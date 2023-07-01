@@ -1,4 +1,4 @@
-package com.example.mysqlmongo.api.dto.request
+package com.example.mysqlmongo.api.dto.request.chat
 
 data class GetChatByConditionRequest(
     val senderId: Long,
