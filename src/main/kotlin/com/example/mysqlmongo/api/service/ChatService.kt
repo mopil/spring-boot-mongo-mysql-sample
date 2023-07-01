@@ -1,6 +1,7 @@
 package com.example.mysqlmongo.api.service
 
 import com.example.mysqlmongo.api.dto.request.CreateChatRequest
+import com.example.mysqlmongo.api.dto.request.GetChatByConditionRequest
 import com.example.mysqlmongo.model.mongo.chat.Chat
 import com.example.mysqlmongo.model.mongo.chat.ChatRepository
 import org.springframework.stereotype.Service
@@ -19,6 +20,10 @@ class ChatService(
 
     fun getChat(id: String): Chat {
         return chatRepository.findById(id).orElseThrow()
+    }
+
+    fun getChatsByCondition(request: GetChatByConditionRequest): List<Chat> {
+        return chatRepository.findAllByCondition(request.senderId, request.receiverId)
     }
 
     fun deleteChat(id: String) {
